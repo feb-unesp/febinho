@@ -3,12 +3,12 @@
 <head>
     <title>Febinho Chat</title>
     <style>
-        /* Estilo do container do chat */
+        /* Estilo do container do chat - Modificado para topo */
         #febinho-container {
             position: fixed;
-            top: 50%;
+            top: 20px;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             width: 320px;
             height: 450px;
             background: #f0f0f0;
@@ -19,20 +19,15 @@
             z-index: 1000;
         }
         
-        /* Estilo do cabeçalho */
         .febinho-header {
             background: #4682B4;
             color: #fff;
             padding: 10px;
             border-radius: 10px 10px 0 0;
             font-weight: bold;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
         }
         
-        /* Estilo da área de mensagens */
         #febinho-messages {
             padding: 10px;
             height: 360px;
@@ -40,7 +35,6 @@
             background: #e5ddd5;
         }
         
-        /* Estilo do rodapé com input */
         .febinho-footer {
             display: flex;
             padding: 10px;
@@ -49,7 +43,6 @@
             align-items: center;
         }
         
-        /* Estilo das mensagens */
         .message-bot {
             display: flex;
             align-items: flex-start;
@@ -82,14 +75,13 @@
 <!-- Container principal do chat -->
 <div id="febinho-container">
     <div class="febinho-header">
-        <span>FEBINHO</span>
-        <a href="https://www.feb.unesp.br/#!/instituicao/administracao/area-administrativa/febinho/" target="_blank" style="color: white; text-decoration: none; font-size: 12px;"></a>
+        FEBINHO
     </div>
     
     <div id="febinho-messages">
         <div class="message-bot">
             <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
-            <div class="bot-bubble">Oie! Sou o FEBINHO. Precisa de ajuda? <a target="_blank"></div>
+            <div class="bot-bubble">Oie! Sou o FEBINHO. Precisa de ajuda?</div>
         </div>
     </div>
     
@@ -130,19 +122,16 @@ function sendFebinhoMessage() {
         addFebinhoMessage(message, true);
         input.value = '';
         
-        // Resposta automática simulada
         setTimeout(() => {
-            addFebinhoMessage('Estou processando sua mensagem: "' + message + '"', false);
+            addFebinhoMessage('Resposta para: "' + message + '"', false);
         }, 500);
     }
 }
 
 // Configuração dos eventos
 document.addEventListener('DOMContentLoaded', function() {
-    // Botão de enviar
     document.getElementById('febinho-send').addEventListener('click', sendFebinhoMessage);
     
-    // Input (envia com Enter)
     document.getElementById('febinho-input').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') sendFebinhoMessage();
     });
