@@ -3,7 +3,15 @@
 <head>
     <title>Febinho Chat</title>
     <style>
-        /* Estilo do container do chat - Modificado para topo */
+        /* FUNDO DA PÁGINA - Azul bebê super clarinho */
+        body {
+            background-color: #e6f4ff; /* Azul bem clarinho */
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* JANELA DO FEBINHO - Mantida original */
         #febinho-container {
             position: fixed;
             top: 20px;
@@ -11,14 +19,15 @@
             transform: translateX(-50%);
             width: 320px;
             height: 450px;
-            background: #f0f0f0;
+            background: #f0f0f0; /* Cinza original */
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra mais suave */
             font-family: Arial, sans-serif;
             font-size: 14px;
             z-index: 1000;
         }
         
+        /* (Mantive todos os outros estilos originais da janela do Febinho) */
         .febinho-header {
             background: #4682B4;
             color: #fff;
@@ -72,7 +81,7 @@
 </head>
 <body>
 
-<!-- Container principal do chat -->
+<!-- (Todo o resto do código mantido igual) -->
 <div id="febinho-container">
     <div class="febinho-header">
         FEBINHO
@@ -94,7 +103,7 @@
 </div>
 
 <script>
-// Função para adicionar mensagens
+// (Todo o JavaScript mantido igual)
 function addFebinhoMessage(text, isUser) {
     const messages = document.getElementById('febinho-messages');
     
@@ -113,7 +122,6 @@ function addFebinhoMessage(text, isUser) {
     messages.scrollTop = messages.scrollHeight;
 }
 
-// Função para enviar mensagem
 function sendFebinhoMessage() {
     const input = document.getElementById('febinho-input');
     const message = input.value.trim();
@@ -128,7 +136,6 @@ function sendFebinhoMessage() {
     }
 }
 
-// Configuração dos eventos
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('febinho-send').addEventListener('click', sendFebinhoMessage);
     
