@@ -1,64 +1,215 @@
-<!-- =============== CHATBOT FEBINHO =============== -->
-<div id="febinho-chat-container" style="position: fixed; bottom: 20px; right: 20px; width: 320px; height: 450px; background: #f0f0f0; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); font-family: Arial, sans-serif; font-size: 14px; z-index: 1000;">
-    <div style="background: #4682B4; color: #fff; padding: 10px; border-radius: 10px 10px 0 0; font-weight: bold; text-align: left;">FEBINHO</div>
-    <div id="febinho-chat-messages" style="padding: 10px; height: 360px; overflow-y: auto; background: #e5ddd5;">
-        <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
-            <img style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;" src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" />
-            <div style="background: #fff; padding: 10px; border-radius: 10px; max-width: 70%;">Oie! Sou o FEBINHO. Precisa de ajuda?</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Febinho Chat</title>
+    <style>
+        /* Estilo do botão flutuante */
+        #febinho-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4682B4;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Estilo do container do chat */
+        #febinho-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 450px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            z-index: 1002;
+            display: none;
+        }
+        
+        /* Estilo do cabeçalho */
+        .febinho-header {
+            background: #4682B4;
+            color: #fff;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Estilo da área de mensagens */
+        #febinho-messages {
+            padding: 10px;
+            height: 360px;
+            overflow-y: auto;
+            background: #e5ddd5;
+        }
+        
+        /* Estilo do rodapé com input */
+        .febinho-footer {
+            display: flex;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 0 0 10px 10px;
+            align-items: center;
+        }
+        
+        /* Estilo das mensagens */
+        .message-bot {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+        
+        .bot-bubble {
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+        
+        .user-bubble {
+            background: #dcf8c6;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+        
+        /* Estilo do overlay */
+        #febinho-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Overlay escuro -->
+<div id="febinho-overlay"></div>
+
+<!-- Botão flutuante para abrir o chat -->
+<button id="febinho-toggle">
+    <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 40px; height: 40px;">
+</button>
+
+<!-- Container principal do chat -->
+<div id="febinho-container">
+    <div class="febinho-header">
+        <span>FEBINHO</span>
+        <button id="febinho-close" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">×</button>
+    </div>
+    
+    <div id="febinho-messages">
+        <div class="message-bot">
+            <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
+            <div class="bot-bubble">Oie! Sou o FEBINHO. Precisa de ajuda?</div>
         </div>
     </div>
-    <div style="display: flex; padding: 10px; background: #f0f0f0; border-radius: 0 0 10px 10px; align-items: center;">
-        <input id="febinho-user-input" style="flex-grow: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; margin-right: 8px; font-size: 14px;" type="text" placeholder="Digite sua mensagem..." />
-        <button id="febinho-send-button" style="background: #4682B4; color: #fff; border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-            <img style="width: 15px; height: 15px;" src="https://feb-unesp.github.io/febinho/setinha.png" alt="Enviar" />
+    
+    <div class="febinho-footer">
+        <input id="febinho-input" type="text" placeholder="Digite sua mensagem..." style="flex-grow: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; margin-right: 8px; font-size: 14px;">
+        <button id="febinho-send" style="background: #4682B4; color: #fff; border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <img src="https://feb-unesp.github.io/febinho/setinha.png" alt="Enviar" style="width: 15px; height: 15px;">
         </button>
     </div>
 </div>
 
 <script>
-(function() {
-    // Função para adicionar mensagens
-    function addFebinhoMessage(text, isUser) {
-        var chatMessages = document.getElementById('febinho-chat-messages');
-        if (!chatMessages) return;
-        
-        var messageDiv = document.createElement('div');
-        messageDiv.style.marginBottom = '10px';
-        
-        if (isUser) {
-            messageDiv.style.display = 'flex';
-            messageDiv.style.justifyContent = 'flex-end';
-            messageDiv.innerHTML = '<div style="background: #dcf8c6; padding: 10px; border-radius: 10px; max-width: 70%;">' + text + '</div>';
-        } else {
-            messageDiv.style.display = 'flex';
-            messageDiv.style.alignItems = 'flex-start';
-            messageDiv.innerHTML = '<img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;"><div style="background: #fff; padding: 10px; border-radius: 10px; max-width: 70%;">' + text + '</div>';
-        }
-        
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+// Função para alternar a visibilidade do chat
+function toggleFebinho() {
+    const container = document.getElementById('febinho-container');
+    const overlay = document.getElementById('febinho-overlay');
+    
+    if (container.style.display === 'none' || !container.style.display) {
+        container.style.display = 'block';
+        overlay.style.display = 'block';
+    } else {
+        container.style.display = 'none';
+        overlay.style.display = 'none';
     }
+}
 
-    // Função para enviar mensagem
-    window.sendFebinhoMessage = function() {
-        var userInput = document.getElementById('febinho-user-input');
-        var message = userInput.value.trim();
+// Função para adicionar mensagens
+function addFebinhoMessage(text, isUser) {
+    const messages = document.getElementById('febinho-messages');
+    
+    const messageDiv = document.createElement('div');
+    if (isUser) {
+        messageDiv.className = 'message-user';
+        messageDiv.innerHTML = `<div class="user-bubble">${text}</div>`;
+    } else {
+        messageDiv.className = 'message-bot';
+        messageDiv.innerHTML = `
+            <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
+            <div class="bot-bubble">${text}</div>`;
+    }
+    
+    messages.appendChild(messageDiv);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+// Função para enviar mensagem
+function sendFebinhoMessage() {
+    const input = document.getElementById('febinho-input');
+    const message = input.value.trim();
+    
+    if (message) {
+        addFebinhoMessage(message, true);
+        input.value = '';
         
-        if (message) {
-            addFebinhoMessage(message, true);
-            userInput.value = '';
-            
-            // Resposta automática (simulada)
-            setTimeout(function() {
-                addFebinhoMessage('Estou processando sua mensagem: "' + message + '"', false);
-            }, 500);
-        }
-    };
+        // Resposta automática simulada
+        setTimeout(() => {
+            addFebinhoMessage('Estou processando sua mensagem: "' + message + '"', false);
+        }, 500);
+    }
+}
 
-    // Configura eventos (clique + Enter)
-    document.getElementById('febinho-send-button').onclick = window.sendFebinhoMessage;
-    document.getElementById('febinho-user-input').onkeypress = function(e) {
-        if (e.key === 'Enter') window.sendFebinhoMessage();
-    };
-})();
+// Configuração dos eventos
+document.addEventListener('DOMContentLoaded', function() {
+    // Botão de toggle
+    document.getElementById('febinho-toggle').addEventListener('click', toggleFebinho);
+    
+    // Botão de fechar
+    document.getElementById('febinho-close').addEventListener('click', toggleFebinho);
+    
+    // Overlay (fecha o chat quando clicado)
+    document.getElementById('febinho-overlay').addEventListener('click', toggleFebinho);
+    
+    // Botão de enviar
+    document.getElementById('febinho-send').addEventListener('click', sendFebinhoMessage);
+    
+    // Input (envia com Enter)
+    document.getElementById('febinho-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendFebinhoMessage();
+    });
+});
 </script>
+
+</body>
+</html>
