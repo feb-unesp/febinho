@@ -3,24 +3,6 @@
 <head>
     <title>Febinho Chat</title>
     <style>
-        /* Estilo do botão flutuante */
-        #febinho-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #4682B4;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            z-index: 1001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
         /* Estilo do container do chat */
         #febinho-container {
             position: fixed;
@@ -34,8 +16,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
             font-family: Arial, sans-serif;
             font-size: 14px;
-            z-index: 1002;
-            display: none;
+            z-index: 1000;
         }
         
         /* Estilo do cabeçalho */
@@ -94,41 +75,21 @@
             border-radius: 10px;
             max-width: 70%;
         }
-        
-        /* Estilo do overlay */
-        #febinho-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: none;
-        }
     </style>
 </head>
 <body>
-
-<!-- Overlay escuro -->
-<div id="febinho-overlay"></div>
-
-<!-- Botão flutuante para abrir o chat -->
-<button id="febinho-toggle">
-    <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 40px; height: 40px;">
-</button>
 
 <!-- Container principal do chat -->
 <div id="febinho-container">
     <div class="febinho-header">
         <span>FEBINHO</span>
-        <button id="febinho-close" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">×</button>
+        <a href="https://www.feb.unesp.br/#!/instituicao/administracao/area-administrativa/febinho/" target="_blank" style="color: white; text-decoration: none; font-size: 12px;">Conheça mais sobre mim</a>
     </div>
     
     <div id="febinho-messages">
         <div class="message-bot">
             <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
-            <div class="bot-bubble">Oie! Sou o FEBINHO. Precisa de ajuda?</div>
+            <div class="bot-bubble">Oie! Sou o FEBINHO. Como posso te ajudar hoje? <a href="https://www.feb.unesp.br/#!/instituicao/administracao/area-administrativa/febinho/" target="_blank">Saiba mais</a> sobre o que posso fazer por você!</div>
         </div>
     </div>
     
@@ -141,20 +102,6 @@
 </div>
 
 <script>
-// Função para alternar a visibilidade do chat
-function toggleFebinho() {
-    const container = document.getElementById('febinho-container');
-    const overlay = document.getElementById('febinho-overlay');
-    
-    if (container.style.display === 'none' || !container.style.display) {
-        container.style.display = 'block';
-        overlay.style.display = 'block';
-    } else {
-        container.style.display = 'none';
-        overlay.style.display = 'none';
-    }
-}
-
 // Função para adicionar mensagens
 function addFebinhoMessage(text, isUser) {
     const messages = document.getElementById('febinho-messages');
@@ -192,15 +139,6 @@ function sendFebinhoMessage() {
 
 // Configuração dos eventos
 document.addEventListener('DOMContentLoaded', function() {
-    // Botão de toggle
-    document.getElementById('febinho-toggle').addEventListener('click', toggleFebinho);
-    
-    // Botão de fechar
-    document.getElementById('febinho-close').addEventListener('click', toggleFebinho);
-    
-    // Overlay (fecha o chat quando clicado)
-    document.getElementById('febinho-overlay').addEventListener('click', toggleFebinho);
-    
     // Botão de enviar
     document.getElementById('febinho-send').addEventListener('click', sendFebinhoMessage);
     
