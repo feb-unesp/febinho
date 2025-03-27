@@ -88,68 +88,78 @@
     </div>
 
     <script>
-        function addFebinhoMessage(text, isUser) {
-            const messages = document.getElementById('febinho-messages');
-            const messageDiv = document.createElement('div');
-            if (isUser) {
-                messageDiv.className = 'message-user';
-                messageDiv.innerHTML = `<div class="user-bubble">${text}</div>`;
-            } else {
-                messageDiv.className = 'message-bot';
-                messageDiv.innerHTML = `
-                    <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
-                    <div class="bot-bubble">${text}</div>`;
-            }
-            messages.appendChild(messageDiv);
-            messages.scrollTop = messages.scrollHeight;
+ 
+    function addFebinhoMessage(text, isUser) {
+        const messages = document.getElementById('febinho-messages');
+        const messageDiv = document.createElement('div');
+        if (isUser) {
+            messageDiv.className = 'message-user';
+            messageDiv.innerHTML = `<div class="user-bubble">${text}</div>`;
+        } else {
+            messageDiv.className = 'message-bot';
+            messageDiv.innerHTML = `
+                <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
+                <div class="bot-bubble">${text}</div>`;
         }
+        messages.appendChild(messageDiv);
+        messages.scrollTop = messages.scrollHeight;
+    }
 
-        function sendFebinhoMessage() {
-            const input = document.getElementById('febinho-input');
-            const message = input.value.trim();
-            if (message) {
-                console.log('Enviando mensagem:', message); // Debug
-                addFebinhoMessage(message, true);
-                input.value = '';
-                
-                fetch('https://script.google.com/macros/s/AKfycbwW25fYLKeH4FY-V-Gy5iUwF35iWzPXrOPesaBqOyMcRw3uFoZCiLAV3rMV_B5JR0W2/exec', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: message })
-                })
-                .then(response => {
-                    console.log('Resposta recebida:', response); // Debug
-                    if (!response.ok) throw new Error('Erro na resposta: ' + response.status);
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Dados recebidos:', data); // Debug
-                    addFebinhoMessage(data.reply, false);
-                })
-                .catch(error => {
-                    console.error('Erro no fetch:', error); // Debug
-                    addFebinhoMessage('Ops, algo deu errado!', false);
-                });
-            } else {
-                console.log('Nenhuma mensagem digitada'); // Debug
-            }
+    function sendFebinhoMessage() {
+        const input = document.getElementById('febinho-input');
+        const message = input.value.trim();
+        if (message) {
+            console.log('Enviando mensagem:', message);
+            addFebinhoMessage(message, true);
+            input.value = '';
+            
+            fetch('https://script.google.com/macros/s/AKfycbwW25fYLKeH4FY-V-Gy5iUwF35iWzPXrOPesaBqOyMcRw3uFoZCiLAV3rMV_B5JR0W2/exec', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => {
+                console.log('Resposta recebida:', response);
+                if (!response.ok) throw new Error('Erro na resposta: ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Dados recebidos:', data);
+                addFebinhoMessage(data.reply, false);
+            })
+            .catch(error => {
+                console.error('Erro no fetch:', error);
+                addFebinhoMessage('Ops, algo deu errado!', false);
+            });
+        } else {
+            console.log('Nenhuma mensagem digitada');
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM carregado'); // Debug
-            const sendButton = document.getElementById('febinho-send');
-            const input = document.getElementById('febinho-input');
-            sendButton.addEventListener('click', function() {
-                console.log('Botão clicado'); // Debug
-                sendFebinhoMessage();
-            });
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    console.log('Enter pressionado'); // Debug
-                    sendFebinhoMessage();
-                }
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM carregado');
+        const sendButton = document.getElementById('febinho-send');
+        const input = document.getElementById('febinho-input');
+        sendButton.addEventListener('click', function() {
+            console.log('Botão clicado');
+            sendFebinhoMessage();
         });
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                console.log('Enter pressionado');
+                sendFebinhoMessage();
+            }
+        });
+    });
+		
+		
+		
+		
+		
+		
+		
+		
+		
     </script>
 </body>
 </html>
