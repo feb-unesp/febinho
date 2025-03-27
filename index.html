@@ -3,15 +3,12 @@
 <head>
     <title>Febinho Chat</title>
     <style>
-        /* FUNDO DA PÁGINA - Azul bebê super clarinho */
         body {
-            background-color: #e6f4ff; /* Azul bem clarinho */
+            background-color: #e6f4ff;
             margin: 0;
             padding: 0;
             min-height: 100vh;
         }
-
-        /* JANELA DO FEBINHO - Mantida original */
         #febinho-container {
             position: fixed;
             top: 20px;
@@ -19,15 +16,13 @@
             transform: translateX(-50%);
             width: 320px;
             height: 450px;
-            background: #f0f0f0; /* Cinza original */
+            background: #f0f0f0;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra mais suave */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             font-family: Arial, sans-serif;
             font-size: 14px;
             z-index: 1000;
         }
-        
-        /* (Mantive todos os outros estilos originais da janela do Febinho) */
         .febinho-header {
             background: #4682B4;
             color: #fff;
@@ -36,14 +31,12 @@
             font-weight: bold;
             text-align: center;
         }
-        
         #febinho-messages {
             padding: 10px;
             height: 360px;
             overflow-y: auto;
             background: #e5ddd5;
         }
-        
         .febinho-footer {
             display: flex;
             padding: 10px;
@@ -51,26 +44,22 @@
             border-radius: 0 0 10px 10px;
             align-items: center;
         }
-        
         .message-bot {
             display: flex;
             align-items: flex-start;
             margin-bottom: 10px;
         }
-        
         .message-user {
             display: flex;
             justify-content: flex-end;
             margin-bottom: 10px;
         }
-        
         .bot-bubble {
             background: #fff;
             padding: 10px;
             border-radius: 10px;
             max-width: 70%;
         }
-        
         .user-bubble {
             background: #dcf8c6;
             padding: 10px;
@@ -80,70 +69,87 @@
     </style>
 </head>
 <body>
-
-<!-- (Todo o resto do código mantido igual) -->
-<div id="febinho-container">
-    <div class="febinho-header">
-        FEBINHO
-    </div>
-    
-    <div id="febinho-messages">
-        <div class="message-bot">
-            <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
-            <div class="bot-bubble">Oie! Sou o FEBINHO. Precisa de ajuda?</div>
+    <div id="febinho-container">
+        <div class="febinho-header">
+            FEBINHO
+        </div>
+        <div id="febinho-messages">
+            <div class="message-bot">
+                <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
+                <div class="bot-bubble">Oie! Sou o FEBINHO. Precisa de ajuda?</div>
+            </div>
+        </div>
+        <div class="febinho-footer">
+            <input id="febinho-input" type="text" placeholder="Digite sua mensagem..." style="flex-grow: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; margin-right: 8px; font-size: 14px;">
+            <button id="febinho-send" style="background: #4682B4; color: #fff; border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                <img src="https://feb-unesp.github.io/febinho/setinha.png" alt="Enviar" style="width: 15px; height: 15px;">
+            </button>
         </div>
     </div>
-    
-    <div class="febinho-footer">
-        <input id="febinho-input" type="text" placeholder="Digite sua mensagem..." style="flex-grow: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; margin-right: 8px; font-size: 14px;">
-        <button id="febinho-send" style="background: #4682B4; color: #fff; border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-            <img src="https://feb-unesp.github.io/febinho/setinha.png" alt="Enviar" style="width: 15px; height: 15px;">
-        </button>
-    </div>
-</div>
 
-<script>
-// (Todo o JavaScript mantido igual)
-function addFebinhoMessage(text, isUser) {
-    const messages = document.getElementById('febinho-messages');
-    
-    const messageDiv = document.createElement('div');
-    if (isUser) {
-        messageDiv.className = 'message-user';
-        messageDiv.innerHTML = `<div class="user-bubble">${text}</div>`;
-    } else {
-        messageDiv.className = 'message-bot';
-        messageDiv.innerHTML = `
-            <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
-            <div class="bot-bubble">${text}</div>`;
-    }
-    
-    messages.appendChild(messageDiv);
-    messages.scrollTop = messages.scrollHeight;
-}
+    <script>
+        function addFebinhoMessage(text, isUser) {
+            const messages = document.getElementById('febinho-messages');
+            const messageDiv = document.createElement('div');
+            if (isUser) {
+                messageDiv.className = 'message-user';
+                messageDiv.innerHTML = `<div class="user-bubble">${text}</div>`;
+            } else {
+                messageDiv.className = 'message-bot';
+                messageDiv.innerHTML = `
+                    <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
+                    <div class="bot-bubble">${text}</div>`;
+            }
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
 
-function sendFebinhoMessage() {
-    const input = document.getElementById('febinho-input');
-    const message = input.value.trim();
-    
-    if (message) {
-        addFebinhoMessage(message, true);
-        input.value = '';
-        
-        setTimeout(() => {
-            addFebinhoMessage('Resposta para: "' + message + '"', false);
-        }, 500);
-    }
-}
+        function sendFebinhoMessage() {
+            const input = document.getElementById('febinho-input');
+            const message = input.value.trim();
+            if (message) {
+                console.log('Enviando mensagem:', message); // Debug
+                addFebinhoMessage(message, true);
+                input.value = '';
+                
+                fetch('https://script.google.com/macros/s/AKfycbwW25fYLKeH4FY-V-Gy5iUwF35iWzPXrOPesaBqOyMcRw3uFoZCiLAV3rMV_B5JR0W2/exec', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                })
+                .then(response => {
+                    console.log('Resposta recebida:', response); // Debug
+                    if (!response.ok) throw new Error('Erro na resposta: ' + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Dados recebidos:', data); // Debug
+                    addFebinhoMessage(data.reply, false);
+                })
+                .catch(error => {
+                    console.error('Erro no fetch:', error); // Debug
+                    addFebinhoMessage('Ops, algo deu errado!', false);
+                });
+            } else {
+                console.log('Nenhuma mensagem digitada'); // Debug
+            }
+        }
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('febinho-send').addEventListener('click', sendFebinhoMessage);
-    
-    document.getElementById('febinho-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') sendFebinhoMessage();
-    });
-});
-</script>
-
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado'); // Debug
+            const sendButton = document.getElementById('febinho-send');
+            const input = document.getElementById('febinho-input');
+            sendButton.addEventListener('click', function() {
+                console.log('Botão clicado'); // Debug
+                sendFebinhoMessage();
+            });
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    console.log('Enter pressionado'); // Debug
+                    sendFebinhoMessage();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
