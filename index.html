@@ -54,16 +54,19 @@
                 addFebinhoMessage(message, true);
                 input.value = '';
                 
-                const webAppUrl = 'https://script.google.com/macros/s/AKfycbx0ThuXkaXpR7qNzyvGRIXReDisCqPMDVggSg68xUEkOp__CIG1smb4oPWZuBWrlQco/exec';
+                const webAppUrl = 'https://script.google.com/macros/s/AKfycbx0WfbmrA6C_FNDGdA70WQ-8TMmvHi_05wXZ8oSWMVBa9jucwWMxj5wlEXug7oQYYef/exec';
+                
+                console.log('Enviando:', JSON.stringify({ message: message }));
                 
                 fetch(webAppUrl, {
                     method: 'POST',
-                    mode: 'no-cors', // Solução temporária para evitar CORS
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: message })
                 })
                 .then(response => {
-                    addFebinhoMessage('Mensagem enviada, aguardando resposta...', false);
+                    console.log('Resposta recebida (opaca):', response);
+                    addFebinhoMessage('Mensagem enviada, deve estar na planilha!', false);
                 })
                 .catch(error => {
                     console.error('Erro:', error);
