@@ -46,32 +46,36 @@
             messages.scrollTop = messages.scrollHeight;
         }
 
-        function sendFebinhoMessage() {
+        async function sendFebinhoMessage() {
             const input = document.getElementById('febinho-input');
             const message = input.value.trim();
             
-            if (message) {
-                addFebinhoMessage(message, true);
-                input.value = '';
-                
-                const webAppUrl = 'https://script.google.com/macros/s/AKfycbx0WfbmrA6C_FNDGdA70WQ-8TMmvHi_05wXZ8oSWMVBa9jucwWMxj5wlEXug7oQYYef/exec';
-                
-                console.log('Enviando:', JSON.stringify({ message: message }));
-                
-                fetch(webAppUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: message })
-                })
-                .then(response => {
-                    console.log('Resposta recebida (opaca):', response);
-                    addFebinhoMessage('Mensagem enviada, deve estar na planilha!', false);
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    addFebinhoMessage('Ops, algo deu errado!', false);
+            if (!message) return;
+            
+            addFebinhoMessage(message, true);
+            input.value = '';
+            
+            const webAppUrl = 'https://script.google.com/macros/s/AKfycbwesVsBDSiMKqyOF9P7TC2Zjary2g3_2RiNZlOi6gXCr6rGyFHWmi7XEPdKMEHsyqiL/exec';
+            console.log('Enviando requisição para:', `${webAppUrl}?message=${encodeURIComponent(message)}`);
+            
+            try {
+                const response = await fetch(`${webAppUrl}?message=${encodeURIComponent(message)}`, {
+                    method: 'GET'
                 });
+                
+                console.log('Status da resposta:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Resposta não OK: ${response.status} - ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Resposta do servidor:', data);
+                addFebinhoMessage(data.reply, false);
+            } catch (error) {
+                console.error('Erro detalhado:', error);
+                addFebinhoMessage(`Erro ao enviar mensagem: ${error.message}`, false);
             }
         }
 
