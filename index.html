@@ -3,69 +3,15 @@
 <head>
     <title>Febinho Chat</title>
     <style>
-        body {
-            background-color: #e6f4ff;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-        #febinho-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 320px;
-            height: 450px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            z-index: 1000;
-        }
-        .febinho-header {
-            background: #4682B4;
-            color: #fff;
-            padding: 10px;
-            border-radius: 10px 10px 0 0;
-            font-weight: bold;
-            text-align: center;
-        }
-        #febinho-messages {
-            padding: 10px;
-            height: 360px;
-            overflow-y: auto;
-            background: #e5ddd5;
-        }
-        .febinho-footer {
-            display: flex;
-            padding: 10px;
-            background: #f0f0f0;
-            border-radius: 0 0 10px 10px;
-            align-items: center;
-        }
-        .message-bot {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-        .message-user {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
-        .bot-bubble {
-            background: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            max-width: 70%;
-        }
-        .user-bubble {
-            background: #dcf8c6;
-            padding: 10px;
-            border-radius: 10px;
-            max-width: 70%;
-        }
+        body { background-color: #e6f4ff; margin: 0; padding: 0; min-height: 100vh; }
+        #febinho-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 320px; height: 450px; background: #f0f0f0; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px; z-index: 1000; }
+        .febinho-header { background: #4682B4; color: #fff; padding: 10px; border-radius: 10px 10px 0 0; font-weight: bold; text-align: center; }
+        #febinho-messages { padding: 10px; height: 360px; overflow-y: auto; background: #e5ddd5; }
+        .febinho-footer { display: flex; padding: 10px; background: #f0f0f0; border-radius: 0 0 10px 10px; align-items: center; }
+        .message-bot { display: flex; align-items: flex-start; margin-bottom: 10px; }
+        .message-user { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        .bot-bubble { background: #fff; padding: 10px; border-radius: 10px; max-width: 70%; }
+        .user-bubble { background: #dcf8c6; padding: 10px; border-radius: 10px; max-width: 70%; }
     </style>
 </head>
 <body>
@@ -94,9 +40,7 @@
                 messageDiv.innerHTML = `<div class="user-bubble">${text}</div>`;
             } else {
                 messageDiv.className = 'message-bot';
-                messageDiv.innerHTML = `
-                    <img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;">
-                    <div class="bot-bubble">${text}</div>`;
+                messageDiv.innerHTML = `<img src="https://feb-unesp.github.io/febinho/febinho.png" alt="Febinho" style="width: 55px; height: 55px; border-radius: 50%; margin-right: 10px;"><div class="bot-bubble">${text}</div>`;
             }
             messages.appendChild(messageDiv);
             messages.scrollTop = messages.scrollHeight;
@@ -110,22 +54,16 @@
                 addFebinhoMessage(message, true);
                 input.value = '';
                 
-                // URL do seu Web App
                 const webAppUrl = 'https://script.google.com/macros/s/AKfycbx0ThuXkaXpR7qNzyvGRIXReDisCqPMDVggSg68xUEkOp__CIG1smb4oPWZuBWrlQco/exec';
                 
                 fetch(webAppUrl, {
                     method: 'POST',
+                    mode: 'no-cors', // Solução temporária para evitar CORS
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: message })
                 })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro na resposta do servidor: ' + response.status);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    addFebinhoMessage(data.reply, false);
+                    addFebinhoMessage('Mensagem enviada, aguardando resposta...', false);
                 })
                 .catch(error => {
                     console.error('Erro:', error);
@@ -134,14 +72,9 @@
             }
         }
 
-        // Adiciona evento ao botão de envio
         document.getElementById('febinho-send').addEventListener('click', sendFebinhoMessage);
-
-        // Permite enviar com Enter
         document.getElementById('febinho-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendFebinhoMessage();
-            }
+            if (e.key === 'Enter') sendFebinhoMessage();
         });
     </script>
 </body>
